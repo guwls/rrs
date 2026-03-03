@@ -1,10 +1,16 @@
 package com.example.review.api;
 
 import com.example.review.api.request.CreateAndEditRestaurantRequest;
+import com.example.review.model.RestaurantEntity;
+import com.example.review.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 public class RestaurantApi {
+
+    private final RestaurantService restaurantService;
 
     //맛집 리스트 조회
     @GetMapping("/restaurants")
@@ -22,11 +28,10 @@ public class RestaurantApi {
 
     //맛집 생성
     @PostMapping("/restaurant")
-    public String createRestaurant(
+    public RestaurantEntity createRestaurant(
             @RequestBody CreateAndEditRestaurantRequest request
-            ) {
-        return "This is createRestaurants, name= " + request.getName() + " address= " + request.getAddress() +
-                ", menu[0].name=" + request.getMenus().get(0).getName() + ", menu[0].price= " + request.getMenus().get(0).getPrice();
+    ) {
+        return restaurantService.createRestaurant(request);
     }
 
     //맛집 수정
