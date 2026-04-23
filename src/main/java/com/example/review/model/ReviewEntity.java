@@ -17,7 +17,11 @@ import java.time.ZonedDateTime;
 public class ReviewEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long restaurantId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    private RestaurantEntity restaurant;
+
     private String content;
     private Double score;
     private ZonedDateTime createdAt;

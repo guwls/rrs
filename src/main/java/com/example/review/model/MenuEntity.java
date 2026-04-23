@@ -17,7 +17,10 @@ public class MenuEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long restaurantId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    private RestaurantEntity restaurant;
+
     private String name;
     private Integer price;
     private ZonedDateTime createdAt;
