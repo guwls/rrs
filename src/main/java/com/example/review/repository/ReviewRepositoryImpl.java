@@ -21,7 +21,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
     public Double getAvgScoreByRestaurantId(Long restaurantId) {
         return queryFactory.select(QReviewEntity.reviewEntity.score.avg())
                 .from(QReviewEntity.reviewEntity)
-                .where(QReviewEntity.reviewEntity.restaurantId.eq(restaurantId))
+                .where(QReviewEntity.reviewEntity.restaurant.id.eq(restaurantId))
                 .fetchFirst();
     }
 
@@ -29,7 +29,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
     public Slice<ReviewEntity> findSliceByRestaurantId(Long restaurantId, Pageable page) {
         List<ReviewEntity> reviews = queryFactory.select(QReviewEntity.reviewEntity)
                 .from(QReviewEntity.reviewEntity)
-                .where(QReviewEntity.reviewEntity.restaurantId.eq(restaurantId))
+                .where(QReviewEntity.reviewEntity.restaurant.id.eq(restaurantId))
                 .offset((long) page.getPageNumber() * page.getPageSize())
                 .limit(page.getPageSize() + 1)
                 .fetch();

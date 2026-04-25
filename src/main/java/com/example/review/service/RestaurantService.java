@@ -43,7 +43,7 @@ public class RestaurantService {
         //리스트에 있는 여러개의 메뉴를 하나씩 가져와서 모두 저장
         request.getMenus().forEach((menu) -> {
             MenuEntity menuEntity = MenuEntity.builder()
-                    .restaurantId(restaurant.getId())
+                    .restaurant(restaurant)
                     .name(menu.getName())
                     .price(menu.getPrice())
                     .createdAt(ZonedDateTime.now())
@@ -80,7 +80,7 @@ public class RestaurantService {
         //메뉴 재등록
         request.getMenus().forEach((menu) -> {
             MenuEntity menuEntity = MenuEntity.builder()
-                    .restaurantId(restaurantId)
+                    .restaurant(restaurant)
                     .name(menu.getName())
                     .price(menu.getPrice())
                     .createdAt(ZonedDateTime.now())

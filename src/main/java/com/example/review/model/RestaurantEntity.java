@@ -26,9 +26,11 @@ public class RestaurantEntity {
     private ZonedDateTime updatedAt;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MenuEntity> menus = new ArrayList<>();
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<ReviewEntity> reviews = new ArrayList<>();
 
     public void changeNameAndAddress(String name, String  address) {

@@ -1,5 +1,6 @@
 package com.example.review.service;
 
+import com.example.review.model.RestaurantEntity;
 import com.example.review.model.ReviewEntity;
 import com.example.review.repository.RestaurantRepository;
 import com.example.review.repository.ReviewRepository;
@@ -20,10 +21,10 @@ public class ReviewService {
 
     @Transactional
     public void createReview(Long restaurantId, String content, Double score) {
-        restaurantRepository.findById(restaurantId).orElseThrow();
+        RestaurantEntity restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
 
         ReviewEntity review = ReviewEntity.builder()
-                .restaurantId(restaurantId)
+                .restaurant(restaurant)
                 .content(content)
                 .score(score)
                 .createdAt(ZonedDateTime.now())
