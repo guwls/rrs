@@ -38,22 +38,17 @@ public class RestaurantService {
         // 받아온 정보 restaurantrepo에 저장
         restaurantRepository.save(restaurant);
 
+        List<MenuEntity> menuEntities = request.getMenus().stream()
+                .map((menu) -> MenuEntity.builder()
+                        .restaurant(restaurant)
+                        .name(menu.getName())
+                        .price(menu.getPrice())
+                        .createdAt(ZonedDateTime.now())
+                        .updatedAt(ZonedDateTime.now())
+                        .build()
+                ).toList();
 
-        //왜 굳이 menuentity에서 바로 가져오면 되는데
-        //리스트에 있는 여러개의 메뉴를 하나씩 가져와서 모두 저장
-        request.getMenus().forEach((menu) -> {
-            MenuEntity menuEntity = MenuEntity.builder()
-                    .restaurant(restaurant)
-                    .name(menu.getName())
-                    .price(menu.getPrice())
-                    .createdAt(ZonedDateTime.now())
-                    .updatedAt(ZonedDateTime.now())
-                    .build();
-
-            //받아온 정보 menurepo에 저장
-            menuRepository.save(menuEntity);
-
-        });
+        menuRepository.saveAll(menuEntities);
 
         return restaurant;
     }
@@ -78,31 +73,24 @@ public class RestaurantService {
         menuRepository.deleteAll(menus);
 
         //메뉴 재등록
-        request.getMenus().forEach((menu) -> {
-            MenuEntity menuEntity = MenuEntity.builder()
-                    .restaurant(restaurant)
-                    .name(menu.getName())
-                    .price(menu.getPrice())
-                    .createdAt(ZonedDateTime.now())
-                    .updatedAt(ZonedDateTime.now())
-                    .build();
+        List<MenuEntity> menuEntities = request.getMenus().stream()
+                .map((menu) -> MenuEntity.builder()
+                        .restaurant(restaurant)
+                        .name(menu.getName())
+                        .price(menu.getPrice())
+                        .createdAt(ZonedDateTime.now())
+                        .updatedAt(ZonedDateTime.now())
+                        .build()
+                ).toList();
 
-            menuRepository.save(menuEntity);
-        });
+        menuRepository.saveAll(menuEntities); // INSERT 1번으로 처리하도록 수정
 
     }
 
     @Transactional
     public void deleteRestaurant(Long restaurantId) {
-        //restaurantrepo에서 해당 restaurantId 조회해서 restaurant에 담아
         RestaurantEntity restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
-        //해당 맛집 restaurantrepo에서 삭제
-        restaurantRepository.delete(restaurant);
-
-        //해당 맛집 메뉴 menurepo에서 조회
-        List<MenuEntity> menus = menuRepository.findAllByRestaurantId(restaurantId);
-        //해당 맛집 메뉴 menurepo에서 삭제
-        menuRepository.deleteAll(menus);
+        restaurantRepository.delete(restaurant); //menu가 자동 삭제되므로 중복 삭제가 되지 않도록 수정
     }
 
     @Transactional(readOnly = true)
