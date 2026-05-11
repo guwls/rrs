@@ -16,3 +16,8 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+jwt:
+  secret: thisismysecretkeyforjwtauthenticationthisismysecretkeyforjwtauthentication
+  access-token-expiration: 1800000    # 30? (???)
+  refresh-token-expiration: 604800000 # 7? (???)
